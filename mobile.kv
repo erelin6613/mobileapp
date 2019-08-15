@@ -1,0 +1,215 @@
+#:import hex kivy.utils.get_color_from_hex
+
+<LinkLabel@ButtonBehavior+Label>:
+    #pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+    color: hex('#00C091')
+    size: cm(6), cm(4)
+    font_size: 14
+
+<Button>:
+	background_normal: ''
+	background_color: hex('#00C091')
+	color: hex('#FFFFFF')
+	
+<MainPage>:
+
+	AnchorLayout:
+
+		size: root.width, root.height
+		canvas:
+			Rectangle:
+				size: root.width, root.height
+
+
+    	GridLayout:
+			anchor_x: 'center'
+			anchor_y: 'bottom'
+        	cols: 1
+        	rows: 14
+        	padding : [50, 10, 50, 10]
+        	spacing : [7, 7]
+        	row_force_default: False
+        	row_default_height: 50
+
+        	Label:
+        		text: ''
+
+        	Image: 
+        		source: 'hirerush_m.jpg'
+
+        	Label:
+        		text: 'Welcome to HireRush.com!'
+        		font_size: 21
+        		color: hex('#7985A1')
+
+        	Label:
+        		text: ''
+
+        	Button:
+        		text: 'Log in'
+        		font_size: 14
+        		on_press: root.login_button_func()
+
+        	Button:
+        		text: 'Join as Professional'
+        		font_size: 14
+        		on_press: root.signup_pro_func()
+
+        	Button: 
+        		text: 'Find a Professional'
+        		font_size: 14
+        		on_press: root.signup_customer_func()
+
+
+
+<Login>:
+	AnchorLayout:
+
+		size: root.width, root.height
+		canvas:
+			Rectangle:
+				size: root.width, root.height
+
+
+
+    	GridLayout:
+			anchor_x: 'center'
+			anchor_y: 'bottom'
+        	cols: 1
+        	rows: 14
+        	padding : [50, 10, 50, 10]
+        	spacing : [7, 7]
+        	row_force_default: True
+        	row_default_height: 50
+
+        	Label:
+        		text: 'Log into your account'
+        		font_size: 20
+
+        	Label:
+        		text: 'Phone number or email'
+        		font_size: 14
+        		color: hex('#7985A1')
+
+        	TextInput:
+        		multiline: False
+
+        	Label:
+        		text: 'Password'
+        		font_size: 14
+        		color: hex('#7985A1')        	
+
+        	TextInput:
+        		multiline: False
+        		password: True
+
+            GridLayout:
+                rows: 1
+                cols: 2
+                #size_hint: 0, 1
+
+                CheckBox:
+                    size_hint: 0.25, 1
+                    color: hex('#00C091')
+
+                Label:
+                    padding_left: 50
+                    text: 'Keep me logged in'
+                    font_size: 12
+                    color: hex('#7985A1')
+
+
+        	Button:
+        		text: 'Login'
+        		font_size: 14
+        		on_press: root.login_button_func()
+
+            LinkLabel:
+
+                size_hint: 0.25, 0.25
+                text: 'Cancel'
+                #on_release: webbrowser.open(self.text)
+                on_release: root.cancel_button_func()
+
+
+
+
+<Signup_pro>:
+    AnchorLayout:
+
+        size: root.width, root.height
+        canvas:
+            Rectangle:
+                size: root.width, root.height
+
+
+        GridLayout:
+            anchor_x: 'center'
+            anchor_y: 'bottom'
+            cols: 1
+            rows: 14
+            padding : [50, 10, 50, 10]
+            spacing : [10, 10]
+            row_force_default: True
+            row_default_height: 35
+            Label:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                text: 'Join our team of professionals'
+                font_size: 20
+                color: hex('#7985A1')
+
+            Label:
+                text: 'Phone number'
+                font_size: 14
+                color: hex('#7985A1')
+                width: 70
+
+
+            TextInput:
+                multiline: False
+
+            Label:
+                text: 'Email'
+                font_size: 14
+                color: hex('#7985A1')
+                width: 70
+
+            TextInput:
+                multiline: False
+
+            Label:
+                text: 'Password'
+                font_size: 14
+                color: hex('#7985A1')
+                width: 70       
+
+            TextInput:
+                multiline: False
+                password: True
+            
+            Label:
+                text: 'Confirm password'
+                font_size: 14
+                color: hex('#7985A1')
+                width: 70         
+
+            TextInput:
+                multiline: False
+                password: True
+
+            Label:
+                text: ''
+
+            Button:
+                text: 'Next'
+                font_size: 14
+                width: 50
+                on_press: root.login_button_func()
+
+            LinkLabel:
+
+                size_hint: 0.25, 0.25
+                text: 'Cancel'
+                #on_release: webbrowser.open(self.text)
+                on_release: root.cancel_button_func()
