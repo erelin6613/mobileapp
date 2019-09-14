@@ -1,4 +1,15 @@
+# File name: app_copy.py
+#:kivy 1.11.1
+
 #:import hex kivy.utils.get_color_from_hex
+#:import webbrowser webbrowser
+#:import Label kivy.uix.label.Label
+#:import Button kivy.uix.button.Button
+#:import App kivy.app
+
+
+
+
 
 <LinkLabel@ButtonBehavior+Label>:
     #pos_hint: {'center_x': 0.5, 'center_y': 0.3}
@@ -6,14 +17,21 @@
     size: cm(6), cm(4)
     font_size: 14
 
+
 <Button>:
 	background_normal: ''
 	background_color: hex('#00C091')
 	color: hex('#FFFFFF')
+
+<CategoryButton>:
+    Button:
+        size: cm(5), cm(5)
 	
 <MainPage>:
 
 	AnchorLayout:
+
+        orientation: 'vertical'
 
 		size: root.width, root.height
 		canvas:
@@ -42,10 +60,9 @@
         		font_size: 21
         		color: hex('#7985A1')
 
-        	Label:
-        		text: ''
 
         	Button:
+
         		text: 'Log in'
         		font_size: 14
         		on_press: root.login_button_func()
@@ -79,7 +96,7 @@
         	rows: 14
         	padding : [50, 10, 50, 10]
         	spacing : [7, 7]
-        	row_force_default: True
+        	row_force_default: False
         	row_default_height: 50
 
         	Label:
@@ -111,6 +128,7 @@
                 CheckBox:
                     size_hint: 0.25, 1
                     color: hex('#00C091')
+                    on_active: root.function(self, self.active)
 
                 Label:
                     padding_left: 50
@@ -129,7 +147,9 @@
                 size_hint: 0.25, 0.25
                 text: 'Cancel'
                 #on_release: webbrowser.open(self.text)
-                on_release: root.cancel_button_func()
+                on_release: 
+                    root.cancel_button_func()
+                    #app.root.screens.transition.direction = 'right'
 
 
 
@@ -144,72 +164,195 @@
 
 
         GridLayout:
-            anchor_x: 'center'
-            anchor_y: 'bottom'
+            #anchor_x: 'center'
+            #anchor_y: 'top'
             cols: 1
-            rows: 14
+            #rows: 14
+            padding : [50, 10, 50, 10]
+            spacing : [10, 10]
+            row_force_default: False
+            row_default_height: 35
+
+            Label:
+                size_hint_x: 0.25
+                size_hint_y: None
+                row_force_default: True
+                text: 'Join our team of professionals'
+                font_size: 18
+                color: hex('#7985A1')
+
+            GridLayout:
+                cols: 2
+                rows: 6
+                spacing : [10, 10]
+                row_force_default: True
+                row_default_height: 35
+
+                Label:
+                    text: 'First name'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70
+
+
+                TextInput:
+                    multiline: False
+
+                Label:
+                    text: 'Last name'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70
+
+
+                TextInput:
+                    multiline: False
+
+                Label:
+                    text: 'Phone number'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70
+
+
+                TextInput:
+                    multiline: False
+
+                Label:
+                    text: 'Email'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70
+
+                TextInput:
+                    multiline: False
+
+                Label:
+                    text: 'Password'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70       
+
+                TextInput:
+                    multiline: False
+                    password: True
+            
+                Label:
+                    text: 'Confirm password'
+                    font_size: 14
+                    color: hex('#7985A1')
+                    width: 70
+
+                TextInput:
+                    multiline: False
+                    password: True       
+
+
+            GridLayout:
+                rows: 1
+                cols: 2
+                padding: [0, 70, 0, 0]
+                #size_hint: 0, 1
+
+                CheckBox:
+                    size_hint: 0.25, 1
+                    color: hex('#00C091')
+
+                LinkLabel:
+
+                    #size_hint: 0.25, 0.25
+                    text: 'I accept HireRush Terms&Conditions \nand HireRush Privacy Policy'
+                    on_release: webbrowser.open('https://www.hirerush.com/terms-conditions')
+                    #on_release: root.cancel_button_func()
+
+
+
+            GridLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+                cols: 1
+                #rows: 14
+                padding : [50, 10, 50, 10]
+                spacing : [10, 10]
+                row_force_default: True
+                row_default_height: 35 
+
+                Button:
+                    text: 'Next'
+                    font_size: 14
+                    width: 50
+                    on_press: root.phone_verification()
+
+                LinkLabel:
+
+                    #size_hint: 0.25, 0.25
+                    text: 'Cancel'
+                    #on_release: webbrowser.open(self.text)
+                    on_release: root.cancel_button_func()
+
+
+
+
+
+<Signup_customer>:
+
+    AnchorLayout:
+
+        size: root.width, root.height
+        #on_parent: for i in range(10): txt = "Label {0}".format(i); root.add_widget(Label(text = txt, text_size=(cm(i), cm(i)), pos=self.pos,id=txt, color=(0, 0, 0, 1)))
+        canvas:
+            Rectangle:
+                size: root.width, root.height
+                #on_property: for i in range(10): txt = "Label {0}".format(i); root.add_widget(Label(text = txt))
+                #text_size=(cm(i), cm(i)), pos=self.pos,id=txt, color=(0, 0, 0 ,1)))
+
+
+
+        GridLayout:
+            #anchor_x: 'center'
+            #anchor_y: 'top'
+            cols: 1
+            #rows: 14
             padding : [50, 10, 50, 10]
             spacing : [10, 10]
             row_force_default: True
             row_default_height: 35
-            Label:
-                anchor_x: 'center'
-                anchor_y: 'top'
-                text: 'Join our team of professionals'
-                font_size: 20
-                color: hex('#7985A1')
-
-            Label:
-                text: 'Phone number'
-                font_size: 14
-                color: hex('#7985A1')
-                width: 70
-
-
-            TextInput:
-                multiline: False
-
-            Label:
-                text: 'Email'
-                font_size: 14
-                color: hex('#7985A1')
-                width: 70
-
-            TextInput:
-                multiline: False
-
-            Label:
-                text: 'Password'
-                font_size: 14
-                color: hex('#7985A1')
-                width: 70       
-
-            TextInput:
-                multiline: False
-                password: True
             
+
             Label:
-                text: 'Confirm password'
-                font_size: 14
+                size_hint_x: 0.25
+                size_hint_y: 0.25
+                row_force_default: True
+                text: 'What service do you need?'
+                font_size: 18
                 color: hex('#7985A1')
-                width: 70         
+                #on_parent: for i in range(10): txt = "Label {0}".format(i); root.add_widget(Label(text = txt, text_size=(cm(i), cm(i)), pos=self.pos,id=txt, color=(0,0,0,0)))
 
             TextInput:
                 multiline: False
-                password: True
 
-            Label:
-                text: ''
+            GridLayout:
+                #anchor_x: 'center'
+                #anchor_y: 'top'
+                cols: 2
+                #rows: 14
+                padding : [50, 10, 50, 10]
+                spacing : [10, 10]
+                row_force_default: True
+                row_default_height: 35
+                Button:
+                    text: 'Load all categories'
+                    on_press: root.remove_widget(root.ids.cancel_button), [root.add_widget(Button(text=list(app.get_running_app().categories.keys())[i], pos=(85, 100+i*40), height=28, width=200, color=hex('#FFFFFF'), on_press=root.lead_gen_func())) for i in range(len(app.get_running_app().categories.keys()))]
 
-            Button:
-                text: 'Next'
-                font_size: 14
-                width: 50
-                on_press: root.login_button_func()
+
 
             LinkLabel:
 
-                size_hint: 0.25, 0.25
+                id: cancel_button
+                #size_hint: 0.25, 0.25
                 text: 'Cancel'
                 #on_release: webbrowser.open(self.text)
                 on_release: root.cancel_button_func()
+
+
+
