@@ -4,17 +4,19 @@
 # Start of development: 08-Aug-2019
 
 
-# Update from 14-Sep-2019
+# Update from 21-Sep-2019
 # Created the basic layout for an app along with
 # basic styles (see mobile.kv)
 # ToDo list:
 # 1. Setting up layout for different roles of users
 # 2. Connection to HireRush database of users and 
 # creating logging/signing up pipelines through an app
+# For the time being nobody who would be interested to build
+# strong backend but me the job is mostly centered around
+# layout and basic 'skeleton' of the app
 
 import kivy
 from kivy.app import App
-
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
@@ -23,6 +25,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.pagelayout import PageLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.graphics.instructions import Canvas
+from kivy.graphics import Rectangle, Color
 #from kivy.lang import Builder
 from kivy.config import Config
 from kivy.uix.image import Image
@@ -34,10 +38,12 @@ from kivy.uix.widget import Widget
 from kivy.uix.rst import RstDocument
 #from kivy.uix.dropdown import DropDown
 import webbrowser
+from kivy.utils import rgba
+from time import sleep
 
 kivy.require('1.11.1')
 
-categories = {
+"""categories = {
 				'Teaching & Caring': ['service-teaching-caring', {'Babysitting': 'babysitters',
 																	'Beauty Schools': 'beauty-schools', 
 																	'Caregiver': 'caregiver', 
@@ -260,7 +266,85 @@ categories = {
                 														'Hoverboard & Segway Repair': 'hoverboard-segway-repair', 
                 														'Lawn Equipment Repair': 'lawn-equipment-repair',
                 														'Motorcycle Repair': 'motorcycle-repair', 
-                														'Towing Services': 'towing-services'}]}
+                														'Towing Services': 'towing-services'}]}"""
+
+categories = {
+				'Teaching & Caring': ['Babysitting', 'Beauty Schools', 'Caregiver', 'Chinese Lessons', 'Cooking Lessons', 
+										'Dancing Lessons', 'Daycare', 'Drawing Classes', 'English Lessons', 'French Lessons', 
+										'Horseback Riding', 'Italian Lessons', 'Japanese Lessons', 'Language Classes', 
+										'MakeUp Lessons', 'Martial Arts', 'Music Lessons', 'Other Classes', 'Photography Classes', 
+										'Piano Lessons', 'Portuguese Lessons', 'Private Tutoring', 'Russian Lessons',
+										'Singing Lessons', 'Spanish Lessons', 'Sport Lessons', 'Surfing lessons', 
+										'Swim lessons', 'Tennis lessons'],
+
+				'Professional Services': ['Academic Writing', 'Bankruptcy Lawyers', 'Business Lawyers',
+											'Civil Rights Lawyers', 'Copywriting', 'Criminal Defense Attorneys', 
+											'Divorce Lawyers', 'Essays Writing & Editing', 'Family Lawyers', 
+											'Immigration Lawyers', 'Lawyers', 'Notary Services', 'Personal Driver', 
+											'Personal Injury Lawyers', 'Private Detective', 'Resume Writing', 'Tax Preparation', 
+											'Translation Services', 'Writing & Editing'],
+
+				'Pet Services': ['Aquarium Services', 'Dog Training', 'Horse Boarding', 'Horse Training',
+								'Pet Daycare & Boarding', 'Pet Groomers', 'Pet Sitters & Walkers', 'Veterinary Services'],
+
+				'Outdoor Contractors': ['Chimney Services', 'Concrete Contractors', 'Demolition Services',
+										'Fence Contractors', 'Fence Repair', 'Firewood', 'Garbage Removal', 'Gardening', 
+										'Gutter Cleaning', 'Gutter Installation & Repair', 'Hardscape Contractors',
+										'Landscaping', 'Lawn Care', 'Masonry Contractors', 'Pool Buildings', 
+										'Pool Cleaners', 'Pool Maintenance','Pressure Washing', 'Roof Cleaning', 
+										'Roofing Contractors', 'Roofing Installation & Repair', 'Snow & Ice Removal',
+										'Sprinkler Repairs', 'Tree Services', 'Yard Clean-Up'],
+
+				'Housekeeping & Cleaning': ['Apartment Cleaning', 'Appliance Cleaning', 'Carpet Cleaning',
+                							'Commercial Cleaning', 'House Cleaning', 'Housekeeping', 
+                							'Janitorial Services', 'Maids', 'Mattress Cleaning', 'Move Out Cleaning',
+                							'Office Cleaning', 'Upholstery Cleaning', 'Window Cleaning'],
+
+				'Household': ['Animal Control', 'Ant Control', 'Appliance Repair & Installation', 
+								'Bathroom Design', 'Bed Bug Control', 'Cell Phone Repair',
+								'Closet Organization', 'Computer Repair', 'Computer Services', 
+								'Decorating', 'Dry-cleaning, Laundry & Alteration',
+								'Grocery Shopping & Delivery', 'Interior Designer',
+								'Kitchen Design & Planning', 'Landscape Designers',
+								'Lighting Design Services', 'Locksmith', 'Moving',
+								'Pest Control', 'Piano Movers', 'Pool Table Movers', 
+								'Rat Control', 'Security Installation', 'Self Storage',
+								'Termite Control', 'Virus Removal', 'Wasp & Bee Removal'],
+
+				'Fasion & Beauty': ['Balayage', 'Barbers', 'Box Braids', 'Crochet Braids', 'Eyebrow Tinting', 
+									'Eyelash Extension', 'Fashion Design', 'Hair Extensions', 'Hair Stylist',
+									'Henna Tattoos Artist', 'Image Consultant', 'MakeUp Artist', 
+									'Nail Services', 'Nutritionist','Permanent MakeUp', 'Personal Stylist',
+									'Personal Trainers', 'Sew in', 'Skin Care', 'Tailors', 'Tattoo Artist', 
+									'Wedding Hair & Makeup Artist'],
+
+				'Events & Parties': ['Bartenders', 'Boudoir Photographers','Bounce House Rentals', 'Catering',
+										'Commercial Photographers', 'DJ & MC', 'Event Photographers', 
+										'Event Planning', 'Face Painting', 'Family Photographers',
+										'Flower Delivery', 'Limo Services', 'Party Entertainment', 
+										'Party Equipment Rental', 'Personal Chef', 'Photographers',
+										'Portrait Photographers', 'Promotional Video Services',
+										'Table & Chair Rentals', 'Videographers', 'Wedding DJ',
+										'Wedding Officiants', 'Wedding Photography', 'Wedding Planner', 
+										'Wedding Videography'],
+
+				'Construction': ['Air Conditioner Installation', 'Air Duct Cleaning',
+                					'Bathtub Installation & Replacement', 'Carpenter', 'Carpet Installation', 
+                					'Deck Building & Repair', 'Door Services', 'Drain Cleaning', 
+                					'Drywall Installation', 'Electrician', 'Exterior Door Installation', 
+                					'Flooring Contractors', 'Furniture Assembly & Repair', 'Garage Door Installation',
+                					'Garage Door Repair', 'General Contractors', 'Handyman', 'Hardwood Flooring', 
+                					'Heating Installation', 'HVAC Repair', 'HVAC Services', 'Laminate Flooring',
+                					'Painting Contractors', 'Piano Tuning', 'Plumber', 'Remodeling Services', 
+                					'Spray Foam Insulation', 'Tile & Ceramic Flooring', 'Tile Contractors',
+                					'TV Installation', 'Vinyl & Linoleum Flooring', 'Water Heater Installation', 
+                					'Water Heater Repair', 'Welding Services', 'Window Installation',
+                					'Window Repair'],
+
+				'Automotive Services': ['Auto Locksmith', 'Auto Repair Services', 'Auto Upholstery Repair',
+                							'Bicycle Repair', 'Car Wash', 'Driving School',
+                							'Hoverboard & Segway Repair', 'Lawn Equipment Repair',
+                							'Motorcycle Repair', 'Towing Services']}
 
 
 width = '375'
@@ -323,25 +407,22 @@ class Signup_customer(Widget):
 		#Clock.schedule_once(self.connect, 1)
 		hirerush_app.screens.current = 'Welcome!'
 
-	def lead_gen_func(self):
-		hirerush_app.screens.current = 'What service do you need?'
-
-
-class Lead_generation(Widget):
-
-	def build(self):
-		layout = GridLayout(cols=2)
-		#for each in categories.keys():
-		#	layout.add_widget(Button(text=each))
-		return layout
-
-	def cancel_button_func(self):
+	def lead_gen_func(self, category):
 		#Clock.schedule_once(self.connect, 1)
-		hirerush_app.screens.current = 'Welcome!'
-
-	categories = categories
-
-
+		#hirerush_app.screens.current = 'What service do you need?'
+		#for child in self.children:
+		self.clear_widgets()
+		self.category = category
+		self.layout = AnchorLayout()
+		with self.canvas:
+			Color(rgba('#FFFFFF'))
+			self.rect = Rectangle(size=(self.width, self.height))
+		self.layout.add_widget(Label(text='text'))
+		#grid = GridLayout(cols=1, padding=[50, 10, 50, 10], spacing=[10, 10], row_force_default=False, row_default_height=35)
+		#self.layout.grid = grid
+		for j in range(len(categories[category])):
+			self.layout.add_widget(Button(text=str(list(categories[category])[j])))
+			print(category)
 
 
 class MobileApp(App):
@@ -371,13 +452,6 @@ class MobileApp(App):
 		screen.add_widget(self.signup_customer)
 		self.screens.add_widget(screen)
 		print(self.screens)
-
-		self.lead_generation = Lead_generation()
-		screen = Screen(name='What service do you need?')
-		screen.add_widget(self.lead_generation)
-		self.screens.add_widget(screen)
-		print(self.screens)
-
 
 		#Signup_customer
 
