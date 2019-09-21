@@ -342,8 +342,7 @@
                 row_default_height: 35
                 Button:
                     text: 'Load all categories'
-                    on_press: root.remove_widget(root.ids.cancel_button), [root.add_widget(Button(text=list(app.get_running_app().categories.keys())[i], pos=(85, 100+i*40), height=28, width=200, color=hex('#FFFFFF'), on_press=root.lead_gen_func())) for i in range(len(app.get_running_app().categories.keys()))]
-
+                    on_press: [root.add_widget(Button(text=list(app.get_running_app().categories.keys())[i], pos=(85, 100+i*40), height=28, width=200, color=hex('#FFFFFF'), on_press=lambda page: root.lead_gen_func(category=str(list(app.get_running_app().categories.keys())[i])))) for i in range(len(app.get_running_app().categories.keys()))]
 
 
             LinkLabel:
@@ -353,6 +352,4 @@
                 text: 'Cancel'
                 #on_release: webbrowser.open(self.text)
                 on_release: root.cancel_button_func()
-
-
 
